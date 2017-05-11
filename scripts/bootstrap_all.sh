@@ -2,6 +2,8 @@
 
 CWD="$(dirname "$(readlink -f "$0")")"
 
+export SALT_OPTS=${SALT_OPTS:-"--state-output=changes --state-verbose=False"}
+
 K8S_BOOTSTRAP=$(salt -C 'I@kubernetes:master' test.ping 1>/dev/null 2>&1 && echo true)
 OPENSTACK_BOOTSTRAP=$(salt -C 'I@nova:controller' test.ping 1>/dev/null 2>&1 && echo true)
 OPENCONTRAIL_BOOTSTRAP=$(salt -C 'I@opencontrail:control' test.ping 1>/dev/null 2>&1 && echo true)
