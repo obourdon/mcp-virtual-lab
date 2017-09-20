@@ -21,4 +21,4 @@ sleep 10
 salt $SALT_OPTS -C 'I@nova:compute' state.sls nova
 salt $SALT_OPTS -C 'I@cinder:volume' state.sls cinder
 salt $SALT_OPTS -C 'I@neutron:compute' state.sls neutron
-salt $SALT_OPTS -C 'I@ceilometer:agent' state.sls ceilometer
+#salt $SALT_OPTS -C 'I@ceilometer:agent' state.sls ceilometer

@@ -39,10 +39,10 @@ salt $SALT_OPTS -C 'I@horizon:server' state.sls horizon
 salt $SALT_OPTS -C 'I@nginx:server' state.sls nginx
 
 # Install ceilometer services
-salt $SALT_OPTS -C 'I@ceilometer:server' state.sls ceilometer -b 1
+#salt $SALT_OPTS -C 'I@ceilometer:server' state.sls ceilometer -b 1
 
 # Install aodh services
-salt $SALT_OPTS -C 'I@aodh:server' state.sls aodh -b 1
+#salt $SALT_OPTS -C 'I@aodh:server' state.sls aodh -b 1
 
 # Create the Nova resources (if any)
 salt $SALT_OPTS -C 'I@nova:client' state.sls nova
