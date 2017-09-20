@@ -37,7 +37,7 @@ classes:
 - cluster.os-ha-contrail-40
 parameters:
   _param:
-    reclass_data_repository: "https://gerrit.mcp.mirantis.net/salt-models/mcp-virtual-lab"
+    reclass_data_repository: "https://github.com/obourdon/mcp-virtual-lab"
     reclass_data_revision: master
     reclass_config_master: ${_param:infra_config_deploy_address}
     single_address: ${_param:infra_config_address}

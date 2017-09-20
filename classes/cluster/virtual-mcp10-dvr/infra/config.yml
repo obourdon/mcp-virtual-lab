@@ -23,7 +23,7 @@ classes:
 - cluster.virtual-mcp10-dvr
 parameters:
   _param:
-    reclass_data_repository: https://gerrit.mcp.mirantis.net/salt-models/mcp-virtual-lab
+    reclass_data_repository: https://github.com/obourdon/mcp-virtual-lab
     reclass_data_revision: master
     salt_master_environment_repository: "https://github.com/tcpcloud"
     salt_master_environment_revision: master

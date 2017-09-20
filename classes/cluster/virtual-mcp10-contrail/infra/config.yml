@@ -24,7 +24,7 @@ classes:
 - cluster.virtual-mcp10-contrail
 parameters:
   _param:
-    reclass_data_repository: "https://gerrit.mcp.mirantis.net/salt-models/mcp-virtual-lab"
+    reclass_data_repository: "https://github.com/obourdon/mcp-virtual-lab"
     reclass_data_revision: master
     reclass_config_master: 192.168.10.90
     single_address: 172.16.10.100
