@@ -116,6 +116,40 @@ parameters:
     mongodb_admin_password: cloudlab
     mongodb_shared_key: eoTh1AwahlahqueingeejooLughah4tei9feing0eeVaephooDi2li1TaeV1ooth
     ceilometer_influxdb_password: lmapass
+
+    cinder_storage_client_key: AQABWNJYUrSgMBAAIcQ++IPA8UqkMlT0zPEGVA==
+    glance_storage_client_key: AQDRV9JYM4omMBAAsbEBoy9viHWp7Q02Q71d9g==
+    nova_storage_client_key: AQAbWNJYx6dFARAAxbubdy2buwyc7gW9F6Dj/g==
+    admin_storage_client_key: AQAQf9FYp4AdIhAA3Hn1uYJcpj130qhN6o4GrA==
+
+    ceph_fsid: 81c6049e-af82-437d-977e-345ce7cf2bc9
+    ceph_mon_initial_members: mon01,mon02,mon03
+    ceph_mon_host: 10.167.4.71,10.167.4.72,10.167.4.73
+    ceph_auth_client_required: cephx
+    ceph_public_network: 10.167.4.0/24
+    ceph_cluster_network: 10.167.4.0/24
+
+    cinder_storage_secret_uuid: 2d1fe96b-9fde-4ddd-a4da-b748c358a6ad
+    nova_storage_secret_uuid: 43ef6e5b-3916-4191-812d-d0a65edba0df
+    nova_storage_pool: vms
+    nova_storage_user: nova
+    cinder_storage_pool: volumes
+    cinder_storage_user: volumes
+    glance_storage_pool: images
+    glance_storage_user: images
+
+  ceph:
+    client:
+      keyring:
+        object:
+           key: ${_param:glance_storage_client_key}
+        cinder:
+          key: ${_param:cinder_storage_client_key}
+        nova:
+          key: ${_param:nova_storage_client_key}
+        admin:
+          key: ${_param:admin_storage_client_key}
+
   linux:
     network:
       purge_hosts: true

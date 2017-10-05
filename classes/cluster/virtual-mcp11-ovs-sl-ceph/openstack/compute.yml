@@ -3,6 +3,7 @@ classes:
 - system.linux.system.repo.mcp.extra
 - system.linux.system.repo.saltstack.xenial
 - system.linux.network.hosts
+- system.ceph.client.single
 - system.nova.compute.cluster
 - system.neutron.compute.cluster
 - system.ceilometer.agent.cluster
@@ -17,6 +18,13 @@ parameters:
     linux_system_codename: xenial
   nova:
     compute:
+      ceph:
+        enabled: true
+        ephemeral: yes
+        rbd_pool: vms
+        secret_uuid: ${_param:nova_storage_secret_uuid}
+        client_cinder_key: ${_param:nova_storage_client_key}
+        rbd_user: nova
       vncproxy_url: http://${_param:cluster_vip_address}:6080
       message_queue:
         members:
