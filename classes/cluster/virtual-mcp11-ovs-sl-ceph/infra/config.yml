@@ -1,0 +1,183 @@
+classes:
+- service.git.client
+- system.linux.system.single
+- system.linux.system.repo.mcp.salt
+- system.linux.system.repo.mcp.openstack
+- system.openssh.client.lab
+- system.salt.master.api
+- system.salt.master.pkg
+- system.reclass.storage.salt
+- system.salt.minion.ca.salt_master
+- system.salt.minion.cert.proxy
+- system.sphinx.server.doc.reclass
+- system.keystone.client.single
+- system.keystone.client.service.ceilometer
+- system.keystone.client.service.nova21
+- system.keystone.client.service.glare
+- system.keystone.client.service.cinder3
+- system.mysql.client.single
+- system.reclass.storage.system.openstack_control_cluster
+- system.reclass.storage.system.stacklight_server_cluster
+- system.reclass.storage.system.openstack_compute_multi
+- system.reclass.storage.system.openstack_dashboard_single
+- system.reclass.storage.system.openstack_gateway_single
+- cluster.virtual-mcp11-ovs-sl-ceph.openstack.proxy
+- cluster.virtual-mcp11-ovs-sl-ceph.stacklight.proxy
+- cluster.virtual-mcp11-ovs-sl-ceph
+parameters:
+  _param:
+    reclass_data_repository: https://github.com/obourdon/mcp-virtual-lab
+    reclass_data_revision: master
+    salt_master_environment_repository: "https://github.com/tcpcloud"
+    salt_master_environment_revision: master
+    reclass_config_master: ${_param:infra_config_deploy_address}
+    single_address: ${_param:infra_config_address}
+    salt_master_host: 127.0.0.1
+    salt_master_base_environment: prd
+    salt_minion_ca_host: ${linux:network:fqdn}
+    salt_api_password_hash: "$6$sGnRlxGf$al5jMCetLP.vfI/fTl3Z0N7Za1aeiexL487jAtyRABVfT3NlwZxQGVhO7S1N8OwS/34VHYwZQA8lkXwKMN/GS1"
+  linux:
+    network:
+      interface:
+        ens4:
+          enabled: true
+          type: eth
+          proto: static
+          address: ${_param:single_address}
+          netmask: 255.255.255.0
+  nginx:
+    server:
+      site:
+        nginx_proxy_openstack_web:
+          proxy:
+            host: ${_param:openstack_proxy_address}
+        nginx_proxy_openstack_api_heat_cfn:
+          enabled: false
+  salt:
+    master:
+      reactor:
+        reclass/minion/classify:
+        - salt://reclass/reactor/node_register.sls
+  reclass:
+    storage:
+      class_mapping:
+        common_node:
+          expression: all
+          node_param:
+            single_address:
+              value_template: <<node_control_ip>>
+            linux_system_codename:
+              value_template: <<node_os>>
+            salt_master_host:
+              value_template: <<node_master_ip>>
+        infra_config:
+          expression: <<node_hostname>>__startswith__cfg
+          cluster_param:
+            infra_config_address:
+              value_template: <<node_control_ip>>
+            infra_config_deploy_address:
+              value_template: <<node_deploy_ip>>
+            cluster_domain:
+              value_template: <<node_domain>>
+        openstack_control01:
+          expression: <<node_hostname>>__equals__ctl01
+          cluster_param:
+            openstack_control_node01_address:
+              value_template: <<node_control_ip>>
+        openstack_control02:
+          expression: <<node_hostname>>__equals__ctl02
+          cluster_param:
+            openstack_control_node02_address:
+              value_template: <<node_control_ip>>
+        openstack_control03:
+          expression: <<node_hostname>>__equals__ctl03
+          cluster_param:
+            openstack_control_node03_address:
+              value_template: <<node_control_ip>>
+        openstack_compute:
+          expression: <<node_hostname>>__startswith__cmp
+          node_class:
+            value_template:
+              - cluster.<<node_cluster>>.openstack.compute
+          node_param:
+            tenant_address:
+              value_template: <<node_tenant_ip>>
+            external_address:
+              value_template: <<node_external_ip>>
+        openstack_gateway:
+          expression: <<node_hostname>>__startswith__gtw
+          node_class:
+            value_template:
+              - cluster.<<node_cluster>>.openstack.gateway
+          node_param:
+            tenant_address:
+              value_template: <<node_tenant_ip>>
+            external_address:
+              value_template: <<node_external_ip>>
+          cluster_param:
+            openstack_gateway_node01_address:
+              value_template: <<node_control_ip>>
+        stacklight_monitor_node01:
+          expression: <<node_hostname>>__equals__mon01
+          cluster_param:
+            stacklight_monitor_node01_address:
+              value_template: <<node_control_ip>>
+        stacklight_monitor_node02:
+          expression: <<node_hostname>>__equals__mon02
+          cluster_param:
+            stacklight_monitor_node02_address:
+              value_template: <<node_control_ip>>
+        stacklight_monitor_node03:
+          expression: <<node_hostname>>__equals__mon03
+          cluster_param:
+            stacklight_monitor_node03_address:
+              value_template: <<node_control_ip>>
+        openstack_dashboard:
+          expression: <<node_hostname>>__startswith__prx
+          node_class:
+            value_template:
+              - cluster.<<node_cluster>>.openstack.dashboard
+              - cluster.<<node_cluster>>.openstack.proxy
+          cluster_param:
+            openstack_proxy_node01_address:
+              value_template: <<node_control_ip>>
+      node:
+        openstack_control_node01:
+          classes:
+          - service.galera.master.cluster
+          params:
+            mysql_cluster_role: master
+            linux_system_codename: xenial
+        openstack_control_node02:
+          classes:
+          - service.galera.slave.cluster
+          params:
+            mysql_cluster_role: slave
+            linux_system_codename: xenial
+        openstack_control_node03:
+          classes:
+          - service.galera.slave.cluster
+          params:
+            mysql_cluster_role: slave
+            linux_system_codename: xenial
+        stacklight_server_node01:
+          classes:
+          - system.influxdb.server.single
+          - system.influxdb.database.stacklight
+        openstack_compute_node01:
+          params:
+            tenant_address: 10.1.0.105
+            external_address: 10.16.0.105
+        openstack_compute_node02:
+          params:
+            tenant_address: 10.1.0.106
+            external_address: 10.16.0.106
+        openstack_gateway_node01:
+          params:
+            tenant_address: 10.1.0.110
+            external_address: 10.16.0.110
+        openstack_proxy_node01:
+          classes:
+          - cluster.virtual-mcp11-ovs-sl-ceph.openstack.proxy
+          params:
+            linux_system_codename: xenial

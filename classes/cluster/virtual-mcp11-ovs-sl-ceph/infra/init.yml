@@ -1,0 +1,20 @@
+parameters:
+  _param:
+    cluster_domain: virtual-mcp11-ovs-sl-ceph.local
+    cluster_name: virtual-mcp11-ovs-sl-ceph
+    infra_config_hostname: cfg01
+    infra_config_deploy_address: 192.168.10.90
+    infra_config_address: 172.16.10.90
+  linux:
+    network:
+      host:
+        cfg01:
+          address: ${_param:infra_config_address}
+          names:
+          - ${_param:infra_config_hostname}
+          - ${_param:infra_config_hostname}.${_param:cluster_domain}
+        cfg:
+          address: ${_param:infra_config_address}
+          names:
+          - cfg
+          - cfg.${_param:cluster_domain}
