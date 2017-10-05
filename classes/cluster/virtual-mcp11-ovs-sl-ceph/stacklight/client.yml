@@ -1,6 +1,22 @@
 classes:
-- system.collectd.client.output.heka
-- system.heka.log_collector.single
-- system.heka.metric_collector.single
-- cluster.virtual-mcp11-ovs-sl-ceph.stacklight
-- service.grafana.collector
+- system.docker.client
+- system.elasticsearch.client.single
+- system.grafana.client
+- system.grafana.client.datasource.prometheus
+- system.kibana.client.single
+- cluster.virtual-mcp11-ovs-sl-ceph
+parameters:
+  _param:
+    # Elasticsearch/Kibana client parameters
+    stacklight_log_address: ${_param:stacklight_monitor_address}
+    # Grafana client parameters
+    grafana_address: ${_param:stacklight_monitor_address}
+    grafana_port: 15013
+    grafana_user: admin
+    grafana_password: ${_param:grafana_admin_password}
+    grafana_prometheus_address: ${_param:stacklight_monitor_address}
+    grafana_prometheus_port: 15016
+
+    cluster_node01_address: ${_param:stacklight_monitor_node01_address}
+    cluster_node02_address: ${_param:stacklight_monitor_node02_address}
+    cluster_node03_address: ${_param:stacklight_monitor_node03_address}

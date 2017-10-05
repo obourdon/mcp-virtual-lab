@@ -11,13 +11,14 @@ classes:
 - system.salt.minion.cert.proxy
 - system.sphinx.server.doc.reclass
 - system.keystone.client.single
+- system.keystone.client.service.aodh
 - system.keystone.client.service.ceilometer
 - system.keystone.client.service.nova21
 - system.keystone.client.service.glare
 - system.keystone.client.service.cinder3
 - system.mysql.client.single
 - system.reclass.storage.system.openstack_control_cluster
-- system.reclass.storage.system.stacklight_server_cluster
+- system.reclass.storage.system.stacklightv2_server_cluster
 - system.reclass.storage.system.openstack_compute_multi
 - system.reclass.storage.system.openstack_dashboard_single
 - system.reclass.storage.system.openstack_gateway_single
@@ -30,12 +31,12 @@ parameters:
     reclass_data_revision: master
     salt_master_environment_repository: "https://github.com/tcpcloud"
     salt_master_environment_revision: master
+    salt_api_password_hash: "$6$sGnRlxGf$al5jMCetLP.vfI/fTl3Z0N7Za1aeiexL487jAtyRABVfT3NlwZxQGVhO7S1N8OwS/34VHYwZQA8lkXwKMN/GS1"
     reclass_config_master: ${_param:infra_config_deploy_address}
     single_address: ${_param:infra_config_address}
     salt_master_host: 127.0.0.1
     salt_master_base_environment: prd
     salt_minion_ca_host: ${linux:network:fqdn}
-    salt_api_password_hash: "$6$sGnRlxGf$al5jMCetLP.vfI/fTl3Z0N7Za1aeiexL487jAtyRABVfT3NlwZxQGVhO7S1N8OwS/34VHYwZQA8lkXwKMN/GS1"
   linux:
     network:
       interface:

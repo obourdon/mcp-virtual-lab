@@ -5,7 +5,8 @@ classes:
 - system.linux.network.hosts
 - system.nova.compute.cluster
 - system.neutron.compute.cluster
-- system.heka.alarm.openstack_compute
+- system.ceilometer.agent.cluster
+- system.prometheus.exporters.libvirt
 - cluster.virtual-mcp11-ovs-sl-ceph
 parameters:
   _param:
@@ -17,16 +18,16 @@ parameters:
   nova:
     compute:
       vncproxy_url: http://${_param:cluster_vip_address}:6080
-      notification:
-        driver: messagingv2
-        topics: "notifications,${_param:stacklight_notification_topic}"
-        notify_on:
-          state_change: vm_and_task_state
       message_queue:
         members:
           - host: ${_param:openstack_control_node01_address}
           - host: ${_param:openstack_control_node02_address}
           - host: ${_param:openstack_control_node03_address}
+      notification:
+        driver: messagingv2
+        topics: "notifications,${_param:stacklight_notification_topic}"
+        notify_on:
+          state_change: vm_and_task_state
   linux:
     network:
       bridge: openvswitch

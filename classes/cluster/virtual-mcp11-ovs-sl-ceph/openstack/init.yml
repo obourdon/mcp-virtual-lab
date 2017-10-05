@@ -21,6 +21,9 @@ parameters:
     openstack_compute_node01_address: 172.16.10.95
     openstack_compute_node02_address: 172.16.10.96
     openstack_database_address: ${_param:openstack_control_address}
+    openstack_database_node01_address: ${_param:openstack_control_node01_address}
+    openstack_database_node02_address: ${_param:openstack_control_node02_address}
+    openstack_database_node03_address: ${_param:openstack_control_node03_address}
     openstack_message_queue_address: ${_param:openstack_control_address}
     openstack_message_queue_node01_address: ${_param:openstack_control_node01_address}
     openstack_message_queue_node02_address: ${_param:openstack_control_node02_address}
@@ -31,9 +34,9 @@ parameters:
     mcp_repo_version: 1.1
     openstack_region: RegionOne
     admin_email: root@localhost
-    cluster_public_protocol: http
     cluster_public_host: 172.16.10.254
     neutron_public_protocol: http
+    cluster_public_protocol: http
     neutron_control_dvr: False
     neutron_tenant_network_types: "flat,vxlan"
     neutron_l3_ha: False
@@ -67,7 +70,9 @@ parameters:
     heat_service_host: ${_param:cluster_vip_address}
     heat_domain_admin_password: workshop
     ceilometer_version: ${_param:openstack_version}
-    ceilometer_service_host: 172.16.10.108
+    ceilometer_service_host: ${_param:cluster_vip_address}
+    aodh_version: ${_param:openstack_version}
+    aodh_service_host: ${_param:cluster_vip_address}
     cinder_version: ${_param:openstack_version}
     cinder_service_host: ${_param:cluster_vip_address}
     ceilometer_graphite_publisher_host: 172.16.10.107
@@ -92,6 +97,7 @@ parameters:
     mysql_aodh_password: workshop
     keystone_service_token: workshop
     keystone_admin_password: workshop
+    keystone_aodh_password: workshop
     keystone_ceilometer_password: workshop
     keystone_cinder_password: workshop
     keystone_glance_password: workshop
@@ -100,7 +106,6 @@ parameters:
     keystone_neutron_password: workshop
     keystone_nova_password: workshop
     ceilometer_secret_key: workshop
-    metadata_password: workshop
     horizon_version: ${_param:openstack_version}
     horizon_secret_key: opaesee8Que2yahJoh9fo0eefo1Aeyo6ahyei8zeiboh3aeth5loth7ieNa5xi5e
     horizon_identity_host: ${_param:cluster_vip_address}
@@ -110,6 +115,7 @@ parameters:
     mongodb_ceilometer_password: cloudlab
     mongodb_admin_password: cloudlab
     mongodb_shared_key: eoTh1AwahlahqueingeejooLughah4tei9feing0eeVaephooDi2li1TaeV1ooth
+    ceilometer_influxdb_password: lmapass
   linux:
     network:
       purge_hosts: true
